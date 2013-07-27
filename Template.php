@@ -4,7 +4,8 @@
  * Template renderer
  * 
  * @author Sam Stevens <sam@xnet.tk>
- * @license http://opensource.org/licenses/MIT MIT License
+ * @license https://github.com/sam159/YAPTE/blob/master/LICENSE MIT License
+ * @link https://github.com/sam159/YAPTE Find me on github
  */
 
 if (!defined('DIR_TEMPLATES_COMPILED'))
