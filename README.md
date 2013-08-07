@@ -15,11 +15,11 @@ Basic Usage
 The core of the templater is focused on some simple reg-ex replcements. As Below.
 
  * __Output / Logic__
- * {{ $hello }}  --> <?php echo $hello ;?>
- * {% if(true): %}True!{% endif %} --> <?php if(true): ;?>True!<?php endif ;?>
+ * `{{ $hello }}`  --> `<?php echo $hello ;?>`
+ * `{% if(true): %}True!{% endif %}` --> `<?php if(true): ;?>True!<?php endif ;?>`
  * __Templater Shortcuts__
- * {{t Render('menu') }} --> <?php echo $this->Render('menu') ;?>
- * {%t StartSection('content') %} --> <?php $this->StartSection('content') ;?>
+ * `{{t Render('menu') }}` --> `<?php echo $this->Render('menu') ;?>`
+ * `{%t StartSection('content') %}` --> `<?php $this->StartSection('content') ;?>`
 
 The theme here is that double brackets output and bracket-percent performs actions/does logic.
 
