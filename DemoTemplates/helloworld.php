@@ -1,7 +1,7 @@
 {% $context['title'] = 'Hello World -- Demo' %}
 {%t SetMaster('master') %}
 
-{%t StartSection('content') %}
+{%t StartSection('head') %}
 <!-- some head here -->
 {%t EndSection() %}
 
