@@ -39,9 +39,9 @@ class Template
   
   private $sections = array();
   private $currentSection = false;
-  private $master = false;
   
   private function __construct() {
+    $this->context[0]['master'] = false;
   }
   
   private function GetCompiledFilename($tFile) {
@@ -74,7 +74,7 @@ class Template
   
   public function Render($file, array $context = array()) {
     self::$currentTemplater = $this;
-    
+
     $tFile = str_replace('.', DS, $file);
     $tFile = DIR_TEMPLATES.DS.$tFile.'.php';
     if (!is_file($tFile))
@@ -86,9 +86,7 @@ class Template
     $this->context[$this->level] = &$context;
     
     extract($this->context[$this->level], EXTR_REFS | EXTR_SKIP);
-    
-    $this->master = false;
-    
+
     $compiledTemplate = $this->GetCompiled($tFile);
     if ($compiledTemplate == false) {
       $templateContents = file_get_contents($tFile);
@@ -97,19 +95,21 @@ class Template
           array('<?php echo $this->$1 ;?>', '<?php echo $1 ;?>', '<?php $this->$1 ;?>', '<?php $1 ;?>'), 
           $templateContents);
       $this->SaveCompiled($tFile, $templateContents);
-      $result = eval('?>'.$templateContents);
+      ob_start();
+      eval('?>'.$templateContents);
+      $result = ob_get_contents();
+      ob_end_clean();
     } else {
       ob_start();
       include($compiledTemplate);
-      $result = ob_get_clean();
+      $result = ob_get_contents();
+      ob_end_clean();
     }
     
     self::$currentTemplater = false;
-    if ($this->currentSection != False)
-      $this->EndSection();
     
-    if ($this->master != false) {
-      return $this->Render($this->master);
+    if ($this->context[0]['master'] != false && $this->level == 1) {
+      return $this->Render($this->context[0]['master']);
     }
     
     unset($this->context[$this->level]);
@@ -119,14 +119,15 @@ class Template
   }
   
   private function SetMaster($file) {
-    $this->master = $file;
+    $this->context[0]['master'] = $file;
   }
   private function StartSection($name) {
     $this->currentSection = $name;
     ob_start();
   }
   private function EndSection() {
-    $this->sections[$this->currentSection] = ob_get_clean();
+    $this->sections[$this->currentSection] = ob_get_contents();
+    ob_end_clean();
     $this->currentSection = false;
   }
   private function GetSection($name) {
