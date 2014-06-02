@@ -48,7 +48,7 @@ class Template
     if (DIR_TEMPLATES_COMPILED == false) {
       return false;
     }
-    $tFileSafe = preg_replace(array('%^'.preg_quote(DIR_TEMPLATES).'/%','/[^a-z0-9_\.]/i'), array('','_'), $tFile);
+    $tFileSafe = preg_replace(array('%^'.preg_quote(DIR_TEMPLATES.DIRECTORY_SEPARATOR,'%').'%','/[^a-z0-9_\.]/i'), array('','_'), $tFile);
     return DIR_TEMPLATES_COMPILED.DS.$tFileSafe.'-'.md5($tFile).'.template.php';
   }
   private function GetCompiled($tFile) {
